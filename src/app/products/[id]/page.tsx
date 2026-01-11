@@ -2,6 +2,7 @@ import Image from "next/image";
 import { getProduct } from "@/lib/api";
 import ProductActions from "@/components/ProductActions";
 import { Product } from "@/types/product";
+import { notFound } from "next/navigation";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -9,7 +10,11 @@ interface PageProps {
 
 export default async function ProductPage({ params }: PageProps) {
   const { id } = await params;
-  const product: Product = await getProduct(id);
+  const product = await getProduct(id);
+
+if (!product) {
+  notFound(); // or render error UI
+}
 
   return (
   <main className="max-w-6xl mx-auto p-6">
